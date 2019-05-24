@@ -1,0 +1,64 @@
+import java.text.SimpleDateFormat
+
+buildscript {
+    dependencies {
+        classpath 'eu.xenit.gradle:xenit-gradle-plugins:3.3.1'
+    }
+}
+
+configurations {
+    jodConverterWar
+}
+
+dependencies {
+    jodConverterWar project(path: ':jodconverter-samples:jodconverter-sample-spring-boot', configuration: 'myWar')
+}
+
+apply plugin: 'xenit-dockerbuild'
+
+def dockerStagingDir = "${buildDir}/docker/"
+
+def branchName = System.env.BRANCH_NAME
+
+dockerFile {
+    dockerFile = file(dockerStagingDir + 'Dockerfile')
+    dockerBuild {
+        repositoryBase = "hub.xenit.eu/jodconverter-ws"
+        pull = true
+
+        if (branchName != null && branchName.startsWith('release')) {
+            def buildDate = new SimpleDateFormat('yyyyMMddHHmm').format(new Date())
+            def buildNumber = System.env.BUILD_NUMBER
+            automaticTags = false
+            tags = ["${project.version}", branchName, branchName+'-build-'+buildDate+'-'+buildNumber]
+        }
+        else {
+            tags = ["${project.version}"]
+            automaticTags = true
+        }
+    }
+}
+
+
+task stageDockerDeps(type: Copy) {
+    from configurations.jodConverterWar
+    from 'src/main/docker'
+    into dockerStagingDir
+}
+
+afterEvaluate {
+    buildDockerImage.dependsOn stageDockerDeps
+}
+
+buildDockerImage {
+    buildArgs = [
+    'JODCONVERTER_WAR_NAME': "${configurations.jodConverterWar.singleFile.getName()}"
+    ]
+}
+
+dockerCompose {
+    useComposeFiles = ['src/test/compose/docker-compose.yml']
+    captureContainersOutput = true
+    removeVolumes = true
+    environment.put 'SPRING_PROFILES_INCLUDE', ''
+}
