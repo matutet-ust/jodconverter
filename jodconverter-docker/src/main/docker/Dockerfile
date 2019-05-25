@@ -1,4 +1,4 @@
-FROM hub.xenit.eu/openjdk:jdk-8-centos-7
+FROM adoptopenjdk/openjdk8
 
 VOLUME /tmp
 VOLUME /libs
@@ -8,7 +8,7 @@ ADD ${JODCONVERTER_WAR_NAME} app.war
 
 ENV JAVA_OPTS=""
 
-RUN yum install -y vim wget curl unzip libice6 libsm-dev fontconfig libxt6 libxfont1 cups-libs libxrender1 gsfonts cairo libSM libreoffice \
+RUN apt-get update && apt-get -y install vim wget curl unzip libice6 libsm-dev fontconfig libxt6 libxfont2 libcups2 libxrender1 gsfonts libreoffice \
     && wget -O /tmp/open-sans.zip https://www.fontsquirrel.com/fonts/download/open-sansopen-sans.zip \
     && mkdir /root/.fonts \
     && unzip /tmp/open-sans.zip -d /root/.fonts \
@@ -18,4 +18,4 @@ RUN yum install -y vim wget curl unzip libice6 libsm-dev fontconfig libxt6 libxf
 EXPOSE 8080
 HEALTHCHECK CMD curl -L --fail http://localhost:8080/ || exit 1
 
-CMD ["java", "\\$JAVA_OPTS", "-jar", "/app.war", "org.springframework.boot.loader.PropertiesLauncher"]
+CMD ["java", "-jar", "/app.war", "org.springframework.boot.loader.PropertiesLauncher"]
