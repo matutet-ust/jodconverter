@@ -20,7 +20,7 @@ def branchName = System.env.BRANCH_NAME
 dockerFile {
     dockerFile = file(dockerStagingDir + 'Dockerfile')
     dockerBuild {
-        repositoryBase = "hub.xenit.eu/jodconverter-ws"
+        repositoryBase = "xeniteu/jodconverter"
         pull = true
 
         if (branchName != null && branchName.startsWith('release')) {
