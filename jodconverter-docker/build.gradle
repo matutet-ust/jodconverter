@@ -36,6 +36,13 @@ dockerFile {
     }
 }
 
+docker {
+    registryCredentials {
+        username = System.getenv("DOCKER_USER")
+        password = System.getenv("DOCKER_PASSWORD")
+    }
+}
+
 
 task stageDockerDeps(type: Copy) {
     from configurations.jodConverterWar
@@ -57,5 +64,4 @@ dockerCompose {
     useComposeFiles = ['src/test/compose/docker-compose.yml']
     captureContainersOutput = true
     removeVolumes = true
-    environment.put 'SPRING_PROFILES_INCLUDE', ''
 }
