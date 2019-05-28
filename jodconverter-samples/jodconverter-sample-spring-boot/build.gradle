@@ -23,6 +23,10 @@ repositories {
   mavenCentral()
 }
 
+configurations {
+  myWar
+}
+
 dependencies {
   compile project(':jodconverter-local')
   compile project(':jodconverter-spring-boot-starter')
@@ -31,4 +35,8 @@ dependencies {
   compile 'org.springframework.boot:spring-boot-devtools'
   
   providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+}
+
+artifacts {
+  myWar bootWar
 }

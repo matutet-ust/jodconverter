@@ -4,6 +4,13 @@ sudo: required
 
 dist: trusty
 
+services:
+  - docker
+
+cache:
+  directories:
+  - "$HOME/.gradle"
+
 matrix:
   include:
     - os: linux
@@ -11,8 +18,15 @@ matrix:
       before_install:
        - chmod +x ./gradlew
        - sudo apt-get install libreoffice
-      script:
-       - ./gradlew build
+      jobs:
+        - stage: test
+          script: ./gradlew check -i
+        - stage: Push docker images
+          if: (branch = master || branch =~ ^release ) && type != pull_request
+          env:
+            - DOCKER_USER=xenitpublisher
+            - secure: "hfxtBgQv/vAEfnZ66tFjfSE33HOVkRee0WDO24aEs081gYnZVaaRcUr8k62tQohLaydHbi4lp7FOV6b0yRKSnko9H8ICWRekZa4DKm1ZxZPcBfme8oABR+bBhvrOBJ15e4E3lJ2/+N2E8CVG1ewIrXUZT3GbtqFhhjvk1Lk0djdFrLhlD9c0e3ZM6vdJW8ACreh7u7IQ5mptuCMyuZZS6qdfbC7JQbs8iP6FGDVcGGfRahoLoh6iWcC56wBvSp1JXmUTJA3nbIJt8T9oibvt5Mn/Z0uIZk2+Dx17fd/q0sV5NXOLw4boMwMCRZ1xtk8ei4hWjUcNvoToJhE6/bTuF61jF2exj6QdQwa0gf2ZvV+449TUXPUUOomBCFOxKhPWtBzD50md8SvS9Q3UMFlNnubL8/b+K5b4pYJtA140sDtnOVOti0YzEHI3RrpynQyrOwsDGLYmxNhxO+TZ/AMiUnQKWP3+Lu2VgCsiOdeN8tNNBH77ZNpGd7SamvVcS0fH8CF3ZMREbHEilN9b4K6TuwrMxk3dGD/k+W7DCrNENsaVD0431edj7wRWLkp4UeXuSx9PCBQkDAniavxQuSA/43d4yEOxPdoVconOoy+BJxjoZxUMMAMEpHx6nmJYU2C1CXQOfjxaQN7cU2ru/NDSabA9lsWQk5g+0gRHZYpr+U0="
+          script: ./gradlew pushDockerImage -i
       after_success:
        - ./gradlew coveralls
     - os: linux
@@ -24,17 +38,5 @@ matrix:
        - ./gradlew build -x javadoc
       after_success:
        - ./gradlew coveralls
-    #macos Java8 - see https://docs.travis-ci.com/user/reference/osx/#jdk-and-macos
-    - os: osx
-      osx_image: xcode8
-      before_install:
-       - chmod +x ./gradlew
-      script:
-       - ./gradlew build -x check -x javadoc
-    #macosJava11
-    - os: osx
-      osx_image: xcode10.1
-      before_install:
-       - chmod +x ./gradlew
-      script:
-       - ./gradlew build -x check -x javadoc
+
+

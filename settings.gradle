@@ -9,7 +9,8 @@ String[] modules = [
     'jodconverter-spring-boot-starter',
     'jodconverter-samples:jodconverter-sample-rest',
     'jodconverter-samples:jodconverter-sample-spring-boot',
-    'jodconverter-samples:jodconverter-sample-webapp'
+    'jodconverter-samples:jodconverter-sample-webapp',
+    'jodconverter-docker'
 ]
 
 include modules

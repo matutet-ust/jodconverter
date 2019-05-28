@@ -1,3 +1,11 @@
+### Github workflow
+
+- **Create an issue** (e.g. #23)
+- **Create locally a branch** called i{issue_number}, e.g. i23
+- **Create PR** with body "fixes #23"
+- **This should automatically close issue**
+
+
 # <img src="https://github.com/sbraconnier/jodconverter/wiki/images/jodconverter_w200.png">&nbsp;<sup>&nbsp;LibreOffice</sup>&nbsp;/&nbsp;<sub>Apache OpenOffice</sub>
 
 [![Build Status](https://api.cirrus-ci.com/github/sbraconnier/jodconverter.svg)](https://cirrus-ci.com/github/sbraconnier/jodconverter)
