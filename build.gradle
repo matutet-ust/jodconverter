@@ -12,6 +12,7 @@ buildscript {
 
   repositories {
     mavenCentral()
+    jcenter()
 
     //Needed only for SNAPSHOT versions
     //maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
@@ -58,6 +59,7 @@ allprojects {
   // Set the maven repository that looks for plugin dependencies.
   repositories {
     mavenCentral()
+    jcenter()
   }
 
   // Eclipse setup
@@ -113,7 +115,7 @@ configure(javaprojects) {
   buildscript {
     repositories {
       maven { url "https://plugins.gradle.org/m2" }
-      mavenCentral()
+      jcenter()
     }
   }
 
