@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat
 
 plugins {
-    id "eu.xenit.docker" version "4.0.3" 
+    id "eu.xenit.docker" version "4.0.3"
 }
 
 configurations {
@@ -15,24 +15,18 @@ dependencies {
 
 def dockerStagingDir = "${buildDir}/docker/"
 
-def branchName = System.env.BRANCH_NAME
+println "Environment variables=" + System.env
+
+def branchName = System.env.TRAVIS_BRANCH
 
 dockerFile {
     dockerFile = file(dockerStagingDir + 'Dockerfile')
     dockerBuild {
-        repositoryBase = "xeniteu/jodconverter"
-        pull = true
-
-        if (branchName != null && branchName.startsWith('release')) {
-            def buildDate = new SimpleDateFormat('yyyyMMddHHmm').format(new Date())
-            def buildNumber = System.env.BUILD_NUMBER
-            automaticTags = false
-            tags = ["${project.version}", branchName, branchName+'-build-'+buildDate+'-'+buildNumber]
-        }
-        else {
-            tags = ["${project.version}"]
-            automaticTags = true
-        }
+        repository = "xeniteu/jodconverter"
+        def buildDate = new SimpleDateFormat('yyyyMMddHHmm').format(new Date())
+        automaticTags = false
+        tags = ["${project.version}", branchName+'-build-'+buildDate]
+        println "Built tags are " + tags
     }
 }
 
@@ -40,7 +34,6 @@ docker {
     registryCredentials {
         username = System.getenv("DOCKER_USER")
         password = System.getenv("DOCKER_PASSWORD")
-        println "username=" + username + " and password=" + password
     }
 }
 
@@ -57,7 +50,7 @@ afterEvaluate {
 
 buildDockerImage {
     buildArgs = [
-    'JODCONVERTER_WAR_NAME': "${configurations.jodConverterWar.singleFile.getName()}"
+            'JODCONVERTER_WAR_NAME': "${configurations.jodConverterWar.singleFile.getName()}"
     ]
 }
 
