@@ -9,7 +9,7 @@ configurations {
 }
 
 dependencies {
-    jodConverterWar project(path: ':jodconverter-samples:jodconverter-sample-spring-boot', configuration: 'myWar')
+    jodConverterWar project(path: ':jodconverter-samples:jodconverter-sample-rest', configuration: 'myWar')
 }
 
 

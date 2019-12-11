@@ -196,7 +196,7 @@ public class ConverterController {
     }
   }
 
-  private ResponseEntity<Object> convert(
+  protected ResponseEntity<Object> convert(
       final MultipartFile inputFile,
       final String outputFormat,
       final Map<String, String> parameters) {
