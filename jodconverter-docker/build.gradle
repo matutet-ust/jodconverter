@@ -13,6 +13,10 @@ dependencies {
     jodConverterWar project(path: ':jodconverter-samples:jodconverter-sample-rest', configuration: 'myWar')
 }
 
+if(ci.isCi() && ci.branch.startsWith("release")) {
+    version = version.toString().replace("-SNAPSHOT", "")
+}
+
 
 def dockerStagingDir = "${buildDir}/docker/"
 
