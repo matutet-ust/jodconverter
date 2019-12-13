@@ -21,6 +21,7 @@ script:
 deploy:
   skip_cleanup: true
   on:
-    branch: release
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(master|release(-.*)?)$
   provider: script
   script: ./gradlew pushDockerImage
