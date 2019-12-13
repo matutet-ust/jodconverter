@@ -13,7 +13,7 @@ matrix:
         - DOCKER_USER=xenitpublisher
         - secure: gFSq7C/o9yvl/nTWN4+Ihcd8StLQC4nPjpdW3u+FnujV/g5x1y/UoBAKYYDTW8+GLQ49RPJQWZ+7HRmv+6k7Nfsn6PO/NxHMhvghw02RKcB0HUN5ii5WgTCyTtJynUatGiwkZsHfPZc4D1ZroHTBUGeHcpg2BEPnIlkGj9jdI7kyl2R+ZidS90fwNwMomBtT8hNqiqQV8RSRUBCrEN/h5PzHvIurd4z1OmGz0fKlVCv/0p9FeckoNNjMREqJ7Pmeewfezz26LzUIhRIlwtdkjJWme8cajWhxsFJsyU0M1WAcuNzJFYnKHPTlzLo3rvpbsdfs4qtfJ+tn7emGNI9a392FFEGM4XKSjnY+5k+PfEAM5MKhezMGxongH+XLSL/PbgNqSnIxZcxICRZr75R7G/cvqQ+lmpbBIIt+omRIW/C2tXW/EX4wyZCpmIxl2bRDSPiFjyuj87u7ZL/I6eLIw9yenTgMNnCqDi0JK7d5fGCtTtc/nT3F+cZ0wgP8ptrJjNBW2o1zhMjG3KeAkHfa4QEwo7vuClYrsjGJ5LmseAuG+tOoSp60FmxtXSofN2tZIAiq+miOVh/nY1URKSS/3fd5Btv7zXiu4L4LGMHfM30Wca3O/4NJetQuIZtN5nBQ+oKJyU/9QHkMvvp8phKioNyg7E6IWVQLTMpemn4LsLc=
 
-before_install:
+install:
   - chmod +x ./gradlew
   - sudo apt-get install libreoffice
 script:
