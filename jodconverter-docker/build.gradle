@@ -2,6 +2,7 @@ import java.text.SimpleDateFormat
 
 plugins {
     id "eu.xenit.docker" version "4.0.3"
+    id "be.vbgn.ci-detect" version "0.3.0"
 }
 
 configurations {
@@ -12,12 +13,12 @@ dependencies {
     jodConverterWar project(path: ':jodconverter-samples:jodconverter-sample-rest', configuration: 'myWar')
 }
 
+if(ci.isCi() && ci.branch.startsWith("release")) {
+    version = version.toString().replace("-SNAPSHOT", "")
+}
+
 
 def dockerStagingDir = "${buildDir}/docker/"
-
-println "Environment variables=" + System.env
-
-def branchName = System.env.TRAVIS_BRANCH
 
 dockerFile {
     dockerFile = file(dockerStagingDir + 'Dockerfile')
@@ -25,8 +26,10 @@ dockerFile {
         repository = "xenit/jodconverter"
         def buildDate = new SimpleDateFormat('yyyyMMddHHmm').format(new Date())
         automaticTags = false
-        tags = ["${project.version}", branchName+'-build-'+buildDate]
-        println "Built tags are " + tags
+        tags = ["${project.version}"]
+        if(ci.isCi()) {
+            tags+=[ci.branch + "-build-" + buildDate]
+        }
     }
 }
 
