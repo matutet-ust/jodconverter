@@ -1,6 +1,12 @@
 server:
   port: 8080
-  
+  tomcat:
+    access-log:
+      enabled: true
+      directory: "/tmp/"
+      prefix: stdout
+      pattern: "%h %l %u %t \"%r\" %s %b %D"
+
 spring:
   servlet:
     multipart:
